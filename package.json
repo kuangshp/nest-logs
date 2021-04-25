@@ -1,6 +1,6 @@
 {
   "name": "nest-logs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "在nestjs中实现日志打印功能",
   "author": "kuangshp@126.com",
   "license": "MIT",

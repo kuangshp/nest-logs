@@ -55,20 +55,23 @@ export class Logger {
   }
 
   private static printLog(type: string, args: string | object | number | boolean | unknown, isPersistent = true):void {
+    const fileInfo = Logger.getStackTrace();
     if (isPersistent) {
-      Logger.loggerCustom[type](Logger.getStackTrace(), `\n${JSON.stringify(args, null, 2)}\n`);
+      Logger.loggerCustom[type](fileInfo, `\n${JSON.stringify(args, null, 2)}\n`);
     }
-    logger[type](Logger.getStackTrace(), `\n${JSON.stringify(args, null, 2)}\n`);
+    logger[type](fileInfo, `\n${JSON.stringify(args, null, 2)}\n`);
   }
 
-  private static getStackTrace = (deep: number = 2): string => {
+  private static getStackTrace = (deep: number = 3): string => {
     const stackList: StackTrace.StackFrame[] = StackTrace.getSync();
     const stackInfo: StackTrace.StackFrame = stackList[deep];
     // const lineNumber: number = stackInfo.lineNumber;
     // const columnNumber: number = stackInfo.columnNumber;
+    const functionName: string = stackInfo.functionName;
     const fileName: string = stackInfo.fileName;
     const basename: string = Path.basename(fileName);
-    return `${basename}:`;
+    // console.log(stackList, lineNumber, columnNumber, functionName, '===');
+    return `[${basename}]-[${functionName}]:`;
   }
 
   private static get loggerCustom(): Log4js.Logger {
